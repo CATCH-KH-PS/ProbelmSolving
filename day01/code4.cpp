@@ -1,0 +1,106 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <string>
+#include <vector>
+#include <queue>
+#include <memory.h>
+#include <algorithm>
+#include <iostream>
+#include <stack>
+#include <unordered_set>
+#include <math.h>
+
+using namespace std;
+int n, m;
+string board[1000]; // 맵
+int check[1000][1000][2] = { {0} }; // 안부쉈을때 체크(index 0)// 부쉈을때 체크 (index 1)
+
+int dx[] = { 1,0,-1,0 };
+int dy[] = { 0, 1, 0 ,-1 };
+
+typedef struct s_node {
+	int x;
+	int y;
+	int cnt;
+	int break_flag;
+}t_node;
+
+
+int	main(void)
+{
+	cin.tie(NULL);
+	cout.tie(NULL);
+	ios_base::sync_with_stdio(false);
+	freopen("input.txt", "r", stdin);
+	
+	queue<t_node*> q; // 탐색에 이용 할 큐
+	cin >> n >> m;
+	for (int i = 0; i < n; i++)
+	{
+		cin >> board[i];
+		for (int j = 0;j < m; j++)
+			board[i][j] -= '0'; // 아스키코드 <> int값 보정
+	}
+
+	int answer = -1; // 답안 기본값
+
+	t_node* node = new t_node; // 처음 노드 삽입
+	node->x = 0;
+	node->y = 0;
+	node->break_flag = 0;
+	node->cnt = 1;
+	q.push(node);
+	check[0][0][0] = 1;
+
+	while (!q.empty())
+	{
+		t_node* node = q.front();
+		int x = node->x;
+		int y = node->y;
+		int cnt = node->cnt;
+		int break_flag = node->break_flag;
+		delete node; // 모든 변수 따로 저장후 메모리 해제
+		q.pop();
+		if (x == m - 1 && y == n - 1) // 만약 끝점이면
+		{
+			if (answer == -1)
+				answer = cnt;
+			else
+				answer = min(answer, cnt);
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			int ny = y + dy[i];
+			int nx = x + dx[i];
+			
+			if (nx >= 0 && nx < m && ny >= 0 && ny < n)
+			{
+		
+				if (check[ny][nx][break_flag] == 0 )
+				{
+					if (break_flag == 0 && board[ny][nx] == 1) // 부술 기회가 있고 벽일 때
+					{ 
+						t_node* node = new t_node;
+						node->x = nx;
+						node->y = ny;
+						node->break_flag = 1;
+						node->cnt =cnt + 1;
+						q.push(node);
+						check[ny][nx][break_flag] = 1;
+					}
+					else if (board[ny][nx] == 0) // 공간일 때 (부술기회 있던 없던)
+					{
+						t_node* node = new t_node;
+						node->x = nx;
+						node->y = ny;
+						node->break_flag = break_flag; //부술 기회 유무를 그대로 유지
+						node->cnt = cnt + 1;
+						q.push(node);
+						check[ny][nx][break_flag] = 1;
+					}
+				}
+			}
+		}
+	}
+	cout << answer;
+	return (0);
+}
