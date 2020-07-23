@@ -1,0 +1,21 @@
+{
+  "files.associations": {
+    "vector": "cpp",
+    "xstring": "cpp",
+    "xlocale": "cpp",
+    "utility": "cpp",
+    "algorithm": "cpp",
+    "deque": "cpp",
+    "ios": "cpp",
+    "memory": "cpp",
+    "streambuf": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "xiosbase": "cpp",
+    "xlocnum": "cpp",
+    "xmemory": "cpp",
+    "xutility": "cpp",
+    "cmath": "cpp",
+    "xtr1common": "cpp"
+  }
+}
