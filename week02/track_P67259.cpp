@@ -41,16 +41,16 @@ void print(void)
 
 void BFS(vector<vector<int>> board)
 {
-  queue<tuple<int, int, int>> q;
+  queue<tuple<int, int, int, int>> q;
   //row, col, 방향 저장: 상하 0 좌우 1
-  q.push(make_tuple(0, 0, 3));
-  int tmp_pay = 0;
+  q.push(make_tuple(0, 0, 3, 0));
 
   while (!q.empty())
   {
     int cur_x = get<0>(q.front());
     int cur_y = get<1>(q.front());
     int cur_dir = get<2>(q.front());
+    int cur_cost = get<3>(q.front());
     q.pop();
 
     for (int i = 0; i < 4; i++)
@@ -58,33 +58,33 @@ void BFS(vector<vector<int>> board)
       int next_x = cur_x + dx[i];
       int next_y = cur_y + dy[i];
       int next_dir;
+      int next_cost;
 
       if (!isValid(next_x, next_y) || (next_x == 0 && next_y == 0) || board[next_x][next_y] != 0)
       {
         continue;
       }
       next_dir = i / 2; //방향 설정
-      int tmp;
       if (cur_dir == 3)
       {
-        tmp = copy_board[cur_x][cur_y] + 100;
+        next_cost = cur_cost + 100;
       }
       else
       {
         if (cur_dir == next_dir)
         {
-          tmp = copy_board[cur_x][cur_y] + 100;
+          next_cost = cur_cost + 100;
         }
         else
         {
-          tmp = copy_board[cur_x][cur_y] + 600;
+          next_cost = cur_cost + 600;
         }
       }
 
-      if (copy_board[next_x][next_y] >= tmp || copy_board[next_x][next_y] == 0)
+      if (copy_board[next_x][next_y] >= next_cost || copy_board[next_x][next_y] == 0)
       {
-        copy_board[next_x][next_y] = tmp;
-        q.push(make_tuple(next_x, next_y, next_dir));
+        copy_board[next_x][next_y] = next_cost;
+        q.push(make_tuple(next_x, next_y, next_dir, next_cost));
       }
 
       // if (next_x == n - 1 && next_y == n - 1)
