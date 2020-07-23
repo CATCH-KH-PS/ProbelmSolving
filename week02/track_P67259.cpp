@@ -81,23 +81,25 @@ void BFS(vector<vector<int>> board)
         }
       }
 
-      if (copy_board[next_x][next_y] > tmp || copy_board[next_x][next_y] == 0)
+      if (copy_board[next_x][next_y] >= tmp || copy_board[next_x][next_y] == 0)
       {
         copy_board[next_x][next_y] = tmp;
         q.push(make_tuple(next_x, next_y, next_dir));
       }
 
-      if (next_x == n - 1 && next_y == n - 1)
-      {
-        if (copy_board[next_x][next_y] < min_pay)
-        {
-          min_pay = copy_board[next_x][next_y];
-          print(); //debugging
-          return;
-        }
-      }
+      // if (next_x == n - 1 && next_y == n - 1)
+      // {
+      //   if (copy_board[next_x][next_y] < min_pay)
+      //   {
+      //     min_pay = copy_board[next_x][next_y];
+      //     print(); //debugging
+      //     return;
+      //   }
+      // }
     }
   }
+  min_pay = copy_board[n - 1][n - 1];
+  return;
 }
 
 int solution(vector<vector<int>> board)
